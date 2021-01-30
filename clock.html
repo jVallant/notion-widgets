@@ -1,0 +1,72 @@
+<html style="height:100%; margin:0; padding:0">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>Clock</title>
+		<style type="text/css">
+			/* Customizable font and colors */
+			html {
+				background: #2f3437;
+				font-family: sans-serif;
+				font-weight: bold;
+				color: #FFFFFF;
+			}
+		</style>
+	</head>
+	
+	<body style="display:list-item; height:95%; width:95%;margin:0% padding:0; justify-content:center; align-items:center">
+
+              <span id="clocktext" ></span><br>
+              <span id="datetext" ></span>
+
+
+		<script>
+			"use strict";
+			
+			var textElem = document.getElementById("clocktext");
+			var dateElem = document.getElementById("datetext");
+            
+			var targetWidth = 0.95;  // Proportion of full screen width
+			var curFontSize = 20;  // Do not change
+			var curFontSize2 = 5;  // Do not change
+            const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
+            const WeekNames=["Sunday","Monday","Thusday","Wednesday","Thursday","Friday","Saturday"]
+    		
+
+			function updateClock() {
+				var d = new Date();
+				var s = "";
+				s += (10 > d.getHours  () ? "0" : "") + d.getHours  () + ":";
+				s += (10 > d.getMinutes() ? "0" : "") + d.getMinutes();
+                
+                var da=""
+                
+                da += WeekNames[d.getDay()]+" ";
+                da += d.getDate()+", ";
+                da += monthNames[d.getMonth()];
+                
+				textElem.textContent = s;
+                dateElem.textContent = da;
+                
+				setTimeout(updateClock, 60000 - d.getTime() % 60000 + 100);
+                
+          
+			}
+			
+			function updateTextSize() {
+				for (var i = 0; 3 > i; i++) {  // Iterate for better better convergence
+					curFontSize *= targetWidth / (textElem.offsetWidth / textElem.parentNode.offsetWidth);
+					if (curFontSize>80)
+						curFontSize=80
+					textElem.style.fontSize = curFontSize + "pt";
+                    curFontSize2=curFontSize/4.2
+                    //curFontSize2 *= targetWidth / (dateElem.offsetWidth / dateElem.parentNode.offsetWidth);
+                    dateElem.style.fontSize = curFontSize2 + "pt";
+				}
+			}
+			
+			updateClock();
+			updateTextSize();
+			window.addEventListener("resize", updateTextSize);
+		</script>
+	</body>
+</html>
